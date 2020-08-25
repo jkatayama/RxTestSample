@@ -94,6 +94,9 @@ class ViewModel: ViewModelProtocol {
 
     var usecase: UseCaseProtocol
     
+    
+    /// Test対象
+    // 初期値nilのdataToShowがrequestData()が呼ばれた時に期待する文字列が流れることをテストする
     var dataToShow: BehaviorRelay<String?> = BehaviorRelay(value: nil)
     
     init(usecase: UseCaseProtocol) {
