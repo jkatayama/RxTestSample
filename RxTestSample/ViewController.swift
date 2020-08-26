@@ -69,9 +69,6 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let usecase = UseCase(repository: Repository())
-        
-//        viewModel = ViewModel(usecase: usecase)
         subscribe()
         viewModel.requestData()
     }
@@ -120,7 +117,6 @@ class ViewModel: ViewModelProtocol {
     private let disposeBag = DisposeBag()
 
     var usecase: UseCaseProtocol
-    
     
     /// Test対象
     // 初期値nilのdataToShowがrequestData()が呼ばれた時に期待する文字列が流れることをテストする
