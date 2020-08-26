@@ -9,12 +9,14 @@ PODS:
   - RxSwift (5.1.1)
   - RxTest (5.1.1):
     - RxSwift (~> 5)
+  - Swinject (2.7.1)
 
 DEPENDENCIES:
   - RxBlocking
   - RxCocoa
   - RxSwift
   - RxTest
+  - Swinject
 
 SPEC REPOS:
   trunk:
@@ -23,6 +25,7 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - RxTest
+    - Swinject
 
 SPEC CHECKSUMS:
   RxBlocking: 5f700a78cad61ce253ebd37c9a39b5ccc76477b4
@@ -30,7 +33,8 @@ SPEC CHECKSUMS:
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   RxTest: 711632d5644dffbeb62c936a521b5b008a1e1faa
+  Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
-PODFILE CHECKSUM: adf842f62aa4fa134543dafbf8da06510ea73c4a
+PODFILE CHECKSUM: f82b014ea2a402ec6612445e027786bbe969003a
 
 COCOAPODS: 1.9.3
