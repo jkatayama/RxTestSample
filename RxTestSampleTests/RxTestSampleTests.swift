@@ -8,50 +8,41 @@
 
 import XCTest
 import RxTest
+import Swinject
 import RxSwift
 import RxBlocking
 @testable import RxTestSample
 
 class RxTestSampleTests: XCTestCase {
+    var container: Container!
     
     var disposeBag: DisposeBag!
     
     var scheduler: TestScheduler!
-    
+
     class MockUseCase: UseCaseProtocol {
-        var repository: RepositoryProtocol
+        var repository: RepositoryProtocol!
         
-        init(testScheduler: TestScheduler) {
-            self.repository = MockRepository(testScheduler: testScheduler)
-        }
+        init() {}
         
         func execute() -> Single<SomeData> {
-            return repository.load()
+            return Single.just(SomeData(country: "U.S."))
         }
     }
-    
-    class MockRepository: RepositoryProtocol {
-        var scheduler: TestScheduler!
         
-        init(testScheduler: TestScheduler) {
-            self.scheduler = testScheduler
-        }
-
-        func load() -> Single<SomeData> {
-            // SingleはtestObservableに対応していない
-            // stubはSignleの固定を返すだけでいい、なぜならテストしたいことはイベントが流れてきた時にbindが正しくされるかであって非同期かどうかは重要でないため
-            return  Single.just(SomeData(country: "U.S."))
-        }
-
-    }
-    
     var sut: ViewModel!
 
     override func setUpWithError() throws {
         scheduler = TestScheduler(initialClock: 0)
         self.disposeBag = DisposeBag()
+        container = Container()
         
-        
+        container.register(MockUseCase.self) { r in
+            MockUseCase()
+        }
+        container.register(ViewModel.self) { r in
+            return ViewModel(usecase: r.resolve(MockUseCase.self)!)
+        }
     }
 
     override func tearDownWithError() throws {
@@ -66,8 +57,7 @@ class RxTestSampleTests: XCTestCase {
         
         /// Given
         disposeBag = DisposeBag()
-        let mockUseCase = MockUseCase(testScheduler: scheduler)
-        sut = ViewModel(usecase: mockUseCase)
+        sut = container.resolve(ViewModel.self)!
         
         var result: String?
         sut.dataToShow.asObservable().subscribe(onNext: { text in
@@ -85,9 +75,8 @@ class RxTestSampleTests: XCTestCase {
 
     func testWithNoTestObservable() throws {
         /// Given
-        let mockUseCase = MockUseCase(testScheduler: scheduler)
         // 本来はここでusecase.execのstubを実装
-        sut = ViewModel(usecase: mockUseCase)
+        sut = container.resolve(ViewModel.self)!
         let observer = scheduler.createObserver(String?.self)
 
         /// When

@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import SwinjectStoryboard
 import Swinject
 // テスト対象クラスが適合するプロトコル
 //protocol HogePresenter: class {
@@ -35,6 +36,7 @@ import Swinject
 
 class MyAssmbly: Assembly {
     func assemble(container: Container) {
+
         container.register(Repository.self) { _ in
             Repository()
             
@@ -47,6 +49,12 @@ class MyAssmbly: Assembly {
         container.register(ViewModel.self) { _ in
             ViewModel(usecase: container.resolve(UseCase.self)!)
         }.inObjectScope(.container)
+        
+        container.storyboardInitCompleted(ViewController.self) { r, vc in
+            vc.viewModel = r.resolve(ViewModel.self)
+        }
+        
+        SwinjectStoryboard.defaultContainer = container
     }
 }
 
@@ -61,9 +69,9 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let usecase = UseCase(repository: Repository())
+//        let usecase = UseCase(repository: Repository())
         
-        viewModel = ViewModel(usecase: usecase)
+//        viewModel = ViewModel(usecase: usecase)
         subscribe()
         viewModel.requestData()
     }
@@ -76,13 +84,13 @@ final class ViewController: UIViewController {
 
 // 依存プロトコル2
 protocol UseCaseProtocol: class {
-    var repository: RepositoryProtocol { get set }
+    var repository: RepositoryProtocol! { get set }
     
     func execute() -> Single<SomeData> // APIとかでデータ取ってくる
 }
 
 class UseCase: UseCaseProtocol {
-    var repository: RepositoryProtocol
+    var repository: RepositoryProtocol!
     
     init(repository: RepositoryProtocol) {
         self.repository = repository
