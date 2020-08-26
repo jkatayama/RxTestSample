@@ -7,9 +7,6 @@
 //
 
 import XCTest
-/* 以下のエラーを防ぐためにもTestCase Target内RxSwiftをimportすべきではない
-objc[9760]: Class _TtGC7RxSwift10ObservableC12RxTestSample8SomeData_ is implemented in both /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib/swift/libswiftCore.dylib (0x7fff89d4be48) and /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib/swift/libswiftCore.dylib (0x7fff89d4e5a8). One of the two will be used. Which one is undefined.
-*/
 import RxTest
 import RxSwift
 import RxBlocking
