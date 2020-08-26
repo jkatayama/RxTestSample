@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,10 @@
 		5DB42AEE24F4FAB7005BB2A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DB42AED24F4FAB7005BB2A4 /* Assets.xcassets */; };
 		5DB42AF124F4FAB7005BB2A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DB42AEF24F4FAB7005BB2A4 /* LaunchScreen.storyboard */; };
 		5DB42AFC24F4FAB7005BB2A4 /* RxTestSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB42AFB24F4FAB7005BB2A4 /* RxTestSampleTests.swift */; };
+		5DD8036624F64DE700A74247 /* UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036524F64DE700A74247 /* UseCase.swift */; };
+		5DD8036824F64E5000A74247 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036724F64E5000A74247 /* ViewModel.swift */; };
+		5DD8036A24F64E7700A74247 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036924F64E7700A74247 /* Repository.swift */; };
+		5DD8036C24F64E9B00A74247 /* MyAssmbly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036B24F64E9B00A74247 /* MyAssmbly.swift */; };
 		92A8D271F5CEDB113B7A7D0E /* Pods_RxTestSampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FECDB5031221C0048354FA /* Pods_RxTestSampleTests.framework */; };
 		E88D70E9039A495C93C5B5AB /* Pods_RxTestSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E69F9DB07A5383508029E1 /* Pods_RxTestSample.framework */; };
 /* End PBXBuildFile section */
@@ -41,6 +45,10 @@
 		5DB42AF724F4FAB7005BB2A4 /* RxTestSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxTestSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DB42AFB24F4FAB7005BB2A4 /* RxTestSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxTestSampleTests.swift; sourceTree = "<group>"; };
 		5DB42AFD24F4FAB7005BB2A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DD8036524F64DE700A74247 /* UseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCase.swift; sourceTree = "<group>"; };
+		5DD8036724F64E5000A74247 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		5DD8036924F64E7700A74247 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		5DD8036B24F64E9B00A74247 /* MyAssmbly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAssmbly.swift; sourceTree = "<group>"; };
 		6B016E3B08852A63EE39FC95 /* Pods-RxTestSampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxTestSampleTests.release.xcconfig"; path = "Target Support Files/Pods-RxTestSampleTests/Pods-RxTestSampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		97FECDB5031221C0048354FA /* Pods_RxTestSampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxTestSampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1C55029EEF069E88FC2D58F /* Pods-RxTestSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxTestSample.release.xcconfig"; path = "Target Support Files/Pods-RxTestSample/Pods-RxTestSample.release.xcconfig"; sourceTree = "<group>"; };
@@ -93,7 +101,11 @@
 			children = (
 				5DB42AE424F4FAB5005BB2A4 /* AppDelegate.swift */,
 				5DB42AE624F4FAB5005BB2A4 /* SceneDelegate.swift */,
+				5DD8036524F64DE700A74247 /* UseCase.swift */,
 				5DB42AE824F4FAB5005BB2A4 /* ViewController.swift */,
+				5DD8036924F64E7700A74247 /* Repository.swift */,
+				5DD8036B24F64E9B00A74247 /* MyAssmbly.swift */,
+				5DD8036724F64E5000A74247 /* ViewModel.swift */,
 				5DB42AEA24F4FAB5005BB2A4 /* Main.storyboard */,
 				5DB42AED24F4FAB7005BB2A4 /* Assets.xcassets */,
 				5DB42AEF24F4FAB7005BB2A4 /* LaunchScreen.storyboard */,
@@ -128,7 +140,6 @@
 				5011DA1CB3C36B8C864666D0 /* Pods-RxTestSampleTests.debug.xcconfig */,
 				6B016E3B08852A63EE39FC95 /* Pods-RxTestSampleTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -318,9 +329,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DD8036824F64E5000A74247 /* ViewModel.swift in Sources */,
 				5DB42AE924F4FAB5005BB2A4 /* ViewController.swift in Sources */,
+				5DD8036624F64DE700A74247 /* UseCase.swift in Sources */,
 				5DB42AE524F4FAB5005BB2A4 /* AppDelegate.swift in Sources */,
 				5DB42AE724F4FAB5005BB2A4 /* SceneDelegate.swift in Sources */,
+				5DD8036A24F64E7700A74247 /* Repository.swift in Sources */,
+				5DD8036C24F64E9B00A74247 /* MyAssmbly.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

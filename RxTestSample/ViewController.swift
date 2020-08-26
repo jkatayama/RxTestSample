@@ -34,36 +34,11 @@ import Swinject
 //    func showData(_ data: SomeData) // 画面を更新する
 //}
 
-class MyAssmbly: Assembly {
-    func assemble(container: Container) {
-
-        container.register(Repository.self) { _ in
-            Repository()
-            
-        }.inObjectScope(.container)
-
-        container.register(UseCase.self) { _ in
-            UseCase(repository: container.resolve(Repository.self)!)
-        }.inObjectScope(.container)
-        
-        container.register(ViewModel.self) { _ in
-            ViewModel(usecase: container.resolve(UseCase.self)!)
-        }.inObjectScope(.container)
-        
-        container.storyboardInitCompleted(ViewController.self) { r, vc in
-            vc.viewModel = r.resolve(ViewModel.self)
-        }
-        
-        SwinjectStoryboard.defaultContainer = container
-    }
-}
-
 
 final class ViewController: UIViewController {
     var viewModel: ViewModelProtocol!
     
     private let disposeBag = DisposeBag()
-    
     
     @IBOutlet weak var label: UILabel!
     
@@ -79,24 +54,6 @@ final class ViewController: UIViewController {
     }
 }
 
-// 依存プロトコル2
-protocol UseCaseProtocol: class {
-    var repository: RepositoryProtocol! { get set }
-    
-    func execute() -> Single<SomeData> // APIとかでデータ取ってくる
-}
-
-class UseCase: UseCaseProtocol {
-    var repository: RepositoryProtocol!
-    
-    init(repository: RepositoryProtocol) {
-        self.repository = repository
-    }
-    
-    func execute() -> Single<SomeData> {
-        return repository.load()
-    }
-}
 
 class SomeData {
     let country: String
@@ -104,45 +61,4 @@ class SomeData {
     init(country: String) {
         self.country = country
     }
-}
-
-protocol ViewModelProtocol: class {
-    var usecase: UseCaseProtocol { get set }
-    var dataToShow: BehaviorRelay<String?> { get set }
-    func requestData()
-}
-
-class ViewModel: ViewModelProtocol {
-    
-    private let disposeBag = DisposeBag()
-
-    var usecase: UseCaseProtocol
-    
-    /// Test対象
-    // 初期値nilのdataToShowがrequestData()が呼ばれた時に期待する文字列が流れることをテストする
-    var dataToShow: BehaviorRelay<String?> = BehaviorRelay(value: nil)
-    
-    init(usecase: UseCaseProtocol) {
-        self.usecase = usecase
-    }
-    
-    func requestData() {
-        usecase.execute().observeOn(MainScheduler.instance)
-        .subscribe(onSuccess: { data in
-            self.dataToShow.accept(data.country)
-        }, onError: { e in
-            }).disposed(by: disposeBag)
-    }
-}
-
-protocol RepositoryProtocol: class {
-    func load() -> Single<SomeData>
-}
-
-class Repository: RepositoryProtocol {
-    func load() -> Single<SomeData> {
-        return Single.just(SomeData(country: "Japan"))
-    }
-    
-    
 }
