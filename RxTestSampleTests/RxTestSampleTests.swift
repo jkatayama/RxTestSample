@@ -20,16 +20,6 @@ class RxTestSampleTests: XCTestCase {
     
     var scheduler: TestScheduler!
 
-    class MockUseCase: UseCaseProtocol {
-        var repository: RepositoryProtocol!
-        
-        init() {}
-        
-        func execute() -> Single<SomeData> {
-            return Single.just(SomeData(country: "U.S."))
-        }
-    }
-        
     var sut: ViewModel!
 
     override func setUpWithError() throws {
@@ -37,12 +27,17 @@ class RxTestSampleTests: XCTestCase {
         self.disposeBag = DisposeBag()
         container = Container()
         
-        container.register(MockUseCase.self) { r in
-            MockUseCase()
+        container.register(UseCaseProtocolMock.self) { r in
+            UseCaseProtocolMock()
         }
+
         container.register(ViewModel.self) { r in
-            return ViewModel(usecase: r.resolve(MockUseCase.self)!)
+            return ViewModel(usecase: r.resolve(UseCaseProtocolMock.self)!)
         }
+    }
+    
+    private func setupDI() {
+        
     }
 
     override func tearDownWithError() throws {
@@ -56,14 +51,20 @@ class RxTestSampleTests: XCTestCase {
         // ただし、関わってくるイベントが増えるにつれてより多くのcode量が必要になりtest codeの可読性が下がる
         
         /// Given
-        disposeBag = DisposeBag()
-        sut = container.resolve(ViewModel.self)!
+        let mock = container.resolve(UseCaseProtocolMock.self)!
         
+        mock.executeHandler = {
+            return Single.just(SomeData(country: "U.S."))
+        }
+        
+        sut = container.resolve(ViewModel.self)!
+        sut.usecase = mock
         var result: String?
+        
         sut.dataToShow.asObservable().subscribe(onNext: { text in
             result = text
             }).disposed(by: disposeBag)
-        
+
         /// When
         sut.requestData()
         
@@ -75,16 +76,22 @@ class RxTestSampleTests: XCTestCase {
 
     func testWithNoTestObservable() throws {
         /// Given
-        // 本来はここでusecase.execのstubを実装
+        let mock = container.resolve(UseCaseProtocolMock.self)!
+        
+        mock.executeHandler = {
+            return Single.just(SomeData(country: "U.S."))
+        }
+        
         sut = container.resolve(ViewModel.self)!
+        sut.usecase = mock
         let observer = scheduler.createObserver(String?.self)
 
+        
         /// When
-
         sut.requestData()
         sut.dataToShow.asObservable().subscribe(observer).disposed(by: disposeBag)
         scheduler.start()
-
+        
         /// Then
         XCTAssertEqual(observer.events, [
             .next(0, "U.S.")
@@ -97,5 +104,4 @@ class RxTestSampleTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
 }

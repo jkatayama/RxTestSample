@@ -21,6 +21,7 @@ class UseCase: UseCaseProtocol {
 }
 
 // 依存プロトコル2
+/// @mockable
 protocol UseCaseProtocol: class {
     var repository: RepositoryProtocol! { get set }
     
