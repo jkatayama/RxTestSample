@@ -25,6 +25,10 @@ class RxTestSampleTests: XCTestCase {
     override func setUpWithError() throws {
         scheduler = TestScheduler(initialClock: 0)
         self.disposeBag = DisposeBag()
+        setupDI()
+    }
+    
+    private func setupDI() {
         container = Container()
         
         container.register(UseCaseProtocolMock.self) { r in
@@ -34,10 +38,6 @@ class RxTestSampleTests: XCTestCase {
         container.register(ViewModel.self) { r in
             return ViewModel(usecase: r.resolve(UseCaseProtocolMock.self)!)
         }
-    }
-    
-    private func setupDI() {
-        
     }
 
     override func tearDownWithError() throws {
@@ -73,6 +73,7 @@ class RxTestSampleTests: XCTestCase {
     }
 
     /// 初回ローディングのようなviewModelがusecaseを実行した後期待するイベントが送られることを検証
+    /// Mock対象のUseCaseがsingleを返すのでTestObserableは使えない
 
     func testWithNoTestObservable() throws {
         /// Given
