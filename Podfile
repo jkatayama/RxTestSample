@@ -8,6 +8,8 @@ target 'RxTestSample' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'Swinject'
+  pod 'SwinjectStoryboard'
+
 
   target 'RxTestSampleTests' do
     inherit! :search_paths
