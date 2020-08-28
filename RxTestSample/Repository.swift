@@ -9,12 +9,12 @@
 import RxSwift
 
 protocol RepositoryProtocol: class {
-    func load() -> Single<SomeData>
+    func load() -> Single<CardProtocol>
 }
 
 class Repository: RepositoryProtocol {
-    func load() -> Single<SomeData> {
-        return Single.just(SomeData(country: "Japan"))
+    func load() -> Single<CardProtocol> {
+        return Single.just(Card(brand: "VISA", number: "4111111111111111"))
     }
 }
 

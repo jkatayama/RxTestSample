@@ -26,16 +26,7 @@ final class ViewController: UIViewController {
     }
     
     private func subscribe() {
-        viewModel.dataToShow.bind(to: label.rx.text)
+        viewModel.cardNumber.bind(to: label.rx.text)
         .disposed(by: disposeBag)
-    }
-}
-
-
-class SomeData {
-    let country: String
-    
-    init(country: String) {
-        self.country = country
     }
 }

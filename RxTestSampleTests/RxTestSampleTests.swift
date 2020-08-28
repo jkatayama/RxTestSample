@@ -31,8 +31,16 @@ class RxTestSampleTests: XCTestCase {
     private func setupDI() {
         container = Container()
         
+        container.register(CardProtocolMock.self) { r in
+            return CardProtocolMock(brand: "Mastercard", number: "5444444444444444")
+        }
+        
         container.register(UseCaseProtocolMock.self) { r in
-            UseCaseProtocolMock()
+            let usecase = UseCaseProtocolMock()
+            usecase.executeHandler = {
+                return Single.just(r.resolve(CardProtocolMock.self)!)
+            }
+            return usecase
         }
 
         container.register(ViewModel.self) { r in
@@ -51,17 +59,11 @@ class RxTestSampleTests: XCTestCase {
         // ただし、関わってくるイベントが増えるにつれてより多くのcode量が必要になりtest codeの可読性が下がる
         
         /// Given
-        let mock = container.resolve(UseCaseProtocolMock.self)!
-        
-        mock.executeHandler = {
-            return Single.just(SomeData(country: "U.S."))
-        }
-        
+
         sut = container.resolve(ViewModel.self)!
-        sut.usecase = mock
         var result: String?
         
-        sut.dataToShow.asObservable().subscribe(onNext: { text in
+        sut.cardNumber.asObservable().subscribe(onNext: { text in
             result = text
             }).disposed(by: disposeBag)
 
@@ -69,34 +71,49 @@ class RxTestSampleTests: XCTestCase {
         sut.requestData()
         
         /// Then
-        XCTAssertEqual(result, "U.S.")
+        XCTAssertEqual(result, "5444444444444444")
     }
 
     /// 初回ローディングのようなviewModelがusecaseを実行した後期待するイベントが送られることを検証
-    /// Mock対象のUseCaseがsingleを返すのでTestObserableは使えない
+    /// Mock対象のUseCaseがsingleを返すのでTestObserable
 
     func testWithNoTestObservable() throws {
         /// Given
-        let mock = container.resolve(UseCaseProtocolMock.self)!
-        
-        mock.executeHandler = {
-            return Single.just(SomeData(country: "U.S."))
-        }
-        
+
         sut = container.resolve(ViewModel.self)!
-        sut.usecase = mock
+
         let observer = scheduler.createObserver(String?.self)
 
         
         /// When
         sut.requestData()
-        sut.dataToShow.asObservable().subscribe(observer).disposed(by: disposeBag)
+        sut.cardNumber.asObservable().subscribe(observer).disposed(by: disposeBag)
         scheduler.start()
         
         /// Then
         XCTAssertEqual(observer.events, [
-            .next(0, "U.S.")
+            .next(0, "5444444444444444")
         ])
+    }
+    
+    
+    
+    func test_Given_UserIsActivated_When_RequestData_Then_ValidSomeData() throws {
+        /// Given
+        sut = container.resolve(ViewModel.self)!
+        let observer = scheduler.createObserver(String?.self)
+
+        
+        /// When
+        sut.requestData()
+        sut.cardNumber.asObservable().subscribe(observer).disposed(by: disposeBag)
+        scheduler.start()
+        
+        /// Then
+        XCTAssertEqual(observer.events, [
+            .next(0, "5444444444444444")
+        ])
+
     }
 
     func testPerformanceExample() throws {

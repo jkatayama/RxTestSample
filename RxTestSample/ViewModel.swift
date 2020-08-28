@@ -11,7 +11,7 @@ import RxCocoa
 
 protocol ViewModelProtocol: class {
     var usecase: UseCaseProtocol { get set }
-    var dataToShow: BehaviorRelay<String?> { get set }
+    var cardNumber: BehaviorRelay<String?> { get set }
     func requestData()
 }
 
@@ -24,8 +24,7 @@ class ViewModel: ViewModelProtocol {
     var usecase: UseCaseProtocol
     
     /// Test対象
-    // 初期値nilのdataToShowがrequestData()が呼ばれた時に期待する文字列が流れることをテストする
-    var dataToShow: BehaviorRelay<String?> = BehaviorRelay(value: nil)
+    var cardNumber: BehaviorRelay<String?> = BehaviorRelay(value: nil)
     
     init(usecase: UseCaseProtocol) {
         self.usecase = usecase
@@ -34,7 +33,7 @@ class ViewModel: ViewModelProtocol {
     func requestData() {
         usecase.execute().observeOn(MainScheduler.instance)
         .subscribe(onSuccess: { data in
-            self.dataToShow.accept(data.country)
+            self.cardNumber.accept(data.number)
         }, onError: { e in
             }).disposed(by: disposeBag)
     }

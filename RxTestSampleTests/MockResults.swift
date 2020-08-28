@@ -4,12 +4,25 @@
 
 
 
+import Foundation
 import RxCocoa
 import RxSwift
-import Swinject
-import SwinjectStoryboard
-import UIKit
 
+
+class CardProtocolMock: CardProtocol {
+    init() { }
+    init(brand: String = "", number: String = "") {
+        self.brand = brand
+        self.number = number
+    }
+
+
+    var brandSetCallCount = 0
+    var brand: String = "" { didSet { brandSetCallCount += 1 } }
+
+    var numberSetCallCount = 0
+    var number: String = "" { didSet { numberSetCallCount += 1 } }
+}
 
 class UseCaseProtocolMock: UseCaseProtocol {
     init() { }
@@ -26,8 +39,8 @@ class UseCaseProtocolMock: UseCaseProtocol {
     }
 
     var executeCallCount = 0
-    var executeHandler: (() -> (Single<SomeData>))?
-    func execute() -> Single<SomeData> {
+    var executeHandler: (() -> (Single<CardProtocol>))?
+    func execute() -> Single<CardProtocol> {
         executeCallCount += 1
         if let executeHandler = executeHandler {
             return executeHandler()

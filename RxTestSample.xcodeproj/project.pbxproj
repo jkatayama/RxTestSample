@@ -19,6 +19,7 @@
 		5DD8036A24F64E7700A74247 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036924F64E7700A74247 /* Repository.swift */; };
 		5DD8036C24F64E9B00A74247 /* MyAssmbly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036B24F64E9B00A74247 /* MyAssmbly.swift */; };
 		5DD8036F24F6527600A74247 /* MockResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8036E24F6527600A74247 /* MockResults.swift */; };
+		5DD8037124F8BCEF00A74247 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD8037024F8BCEF00A74247 /* Entity.swift */; };
 		92A8D271F5CEDB113B7A7D0E /* Pods_RxTestSampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FECDB5031221C0048354FA /* Pods_RxTestSampleTests.framework */; };
 		E88D70E9039A495C93C5B5AB /* Pods_RxTestSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E69F9DB07A5383508029E1 /* Pods_RxTestSample.framework */; };
 /* End PBXBuildFile section */
@@ -50,7 +51,8 @@
 		5DD8036724F64E5000A74247 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5DD8036924F64E7700A74247 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		5DD8036B24F64E9B00A74247 /* MyAssmbly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAssmbly.swift; sourceTree = "<group>"; };
-		5DD8036E24F6527600A74247 /* MockResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockResults.swift; sourceTree = SOURCE_ROOT; };
+		5DD8036E24F6527600A74247 /* MockResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockResults.swift; sourceTree = "<group>"; };
+		5DD8037024F8BCEF00A74247 /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		6B016E3B08852A63EE39FC95 /* Pods-RxTestSampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxTestSampleTests.release.xcconfig"; path = "Target Support Files/Pods-RxTestSampleTests/Pods-RxTestSampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		97FECDB5031221C0048354FA /* Pods_RxTestSampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxTestSampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1C55029EEF069E88FC2D58F /* Pods-RxTestSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxTestSample.release.xcconfig"; path = "Target Support Files/Pods-RxTestSample/Pods-RxTestSample.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				5DD8036524F64DE700A74247 /* UseCase.swift */,
 				5DB42AE824F4FAB5005BB2A4 /* ViewController.swift */,
 				5DD8036924F64E7700A74247 /* Repository.swift */,
+				5DD8037024F8BCEF00A74247 /* Entity.swift */,
 				5DD8036B24F64E9B00A74247 /* MyAssmbly.swift */,
 				5DD8036724F64E5000A74247 /* ViewModel.swift */,
 				5DB42AEA24F4FAB5005BB2A4 /* Main.storyboard */,
@@ -295,11 +298,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				$SRCROOT/MockResults.swift,
+				$SRCROOT/RxTestSampleTests/MockResults.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which mockolo >/dev/null; then\n  rm -f $SRCROOT/MockResults.swift\n  mockolo --header \"@testable import RxTestSample\" --sourcedirs $SRCROOT/RxTestSample --destination $SRCROOT/MockResults.swift\nelse\n  echo \"warning: Mint not installed, download from https://github.com/yonaskolb/Mint\"\nfi\n";
+			shellScript = "if which mockolo >/dev/null; then\n  rm -f $SRCROOT/MockResults.swift\n  mockolo --header \"@testable import RxTestSample\" --sourcedirs $SRCROOT/RxTestSample --destination $SRCROOT/RxTestSampleTests/MockResults.swift\nelse\n  echo \"warning: Mint not installed, download from https://github.com/yonaskolb/Mint\"\nfi\n";
 		};
 		BC4B4B2F7C4220B2DEF2791E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -356,6 +359,7 @@
 				5DB42AE924F4FAB5005BB2A4 /* ViewController.swift in Sources */,
 				5DD8036624F64DE700A74247 /* UseCase.swift in Sources */,
 				5DB42AE524F4FAB5005BB2A4 /* AppDelegate.swift in Sources */,
+				5DD8037124F8BCEF00A74247 /* Entity.swift in Sources */,
 				5DB42AE724F4FAB5005BB2A4 /* SceneDelegate.swift in Sources */,
 				5DD8036A24F64E7700A74247 /* Repository.swift in Sources */,
 				5DD8036C24F64E9B00A74247 /* MyAssmbly.swift in Sources */,

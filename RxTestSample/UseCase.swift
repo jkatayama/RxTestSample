@@ -15,7 +15,7 @@ class UseCase: UseCaseProtocol {
         self.repository = repository
     }
     
-    func execute() -> Single<SomeData> {
+    func execute() -> Single<CardProtocol> {
         return repository.load()
     }
 }
@@ -24,6 +24,6 @@ class UseCase: UseCaseProtocol {
 protocol UseCaseProtocol: class {
     var repository: RepositoryProtocol! { get set }
     
-    func execute() -> Single<SomeData> // APIとかでデータ取ってくる
+    func execute() -> Single<CardProtocol> // APIとかでデータ取ってくる
 }
 
