@@ -107,6 +107,7 @@ class RxTestSampleTests: XCTestCase {
         /// When
         sut.requestData()
         sut.cardNumber.asObservable().subscribe(observer).disposed(by: disposeBag)
+        
         scheduler.start()
         
         /// Then
@@ -115,6 +116,51 @@ class RxTestSampleTests: XCTestCase {
         ])
 
     }
+    
+    func testWithScheduler() throws {
+        /// Given
+//        sut = container.resolve(ViewModel.self)!
+        
+        let stub = container.resolve(UseCaseProtocolMock.self)!
+        
+        stub.executeHandler = {
+            self.scheduler.createColdObservable([
+                .next(0, self.container.resolve(CardProtocolMock.self)!),
+                .next(100, self.container.resolve(CardProtocolMock.self)!)
+            ]).asSingle()
+        }
+        
+        
+        let observer = scheduler.createObserver(String?.self)
+
+        
+//        sut = container.resolve(ViewModel.self)!
+        
+        container.register(ViewModel.self) { r in
+            return ViewModel(usecase: stub)
+        }
+        
+        sut = container.resolve(ViewModel.self)!
+
+
+        /// When
+        sut.cardNumber.asObservable().subscribe(observer).disposed(by: disposeBag)
+
+        scheduler.start()
+        sut.requestData()
+
+        
+
+        /// Then
+        XCTAssertRecordedElements(observer.events, ["5444444444444444", "5444444444444444", "5444444444444444", "5444444444444444"])
+
+//        XCTAssertEqual(observer.events, [
+//            .next(0, nil),
+//            .next(0, "5444444444444444")
+//        ])
+
+    }
+
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
